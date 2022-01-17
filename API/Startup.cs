@@ -21,6 +21,7 @@ namespace API
         // This method gets called by the runtime. Use this method to add services to the container.
 
         // { ConfigureServices s³u¿y do konfigurowania DI }
+        // { w ConfigureServices kolejnoœæ nie ma wiêkszego znaczenia }
         public void ConfigureServices(IServiceCollection services)
         {
 
@@ -34,11 +35,14 @@ namespace API
             {
             opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
             });
+
+            services.AddCors();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
 
         // { Configure s³u¿y do Middleware }
+        // { w Configure kolejnoœæ ma znaczenie }
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -48,9 +52,14 @@ namespace API
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebAPIv5 v1"));
             }
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors(opt =>
+            {
+                opt.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:3000");
+            });
 
             app.UseAuthorization();
 
