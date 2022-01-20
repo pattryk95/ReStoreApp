@@ -51,7 +51,7 @@ namespace API.Controllers
                 return StatusCode(201);
             }
 
-            return BadRequest(new ProblemDetails { Title = "Problem saving item to basket" };
+            return BadRequest(new ProblemDetails { Title = "Problem saving item to basket" });
         }
 
         [HttpDelete]
